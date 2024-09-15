@@ -20,6 +20,22 @@ FROM (
 WHERE row_num % 2 != 0
 ORDER BY row_num ASC;
 
+-- Given a table EMPLOYEE with two columns EMP_ID and SALARY, extract the employees with the 3rd highest salary.
+SELECT EMP_ID, SALARY
+FROM EMPLOYEES
+ORDER BY SALARY DESC
+LIMIT 1 OFFSET 2;
+
+-- What is wrong with this SQL query? Correct it so it executes properly.
+SELECT ID, YEAR(BILLINGDATE) AS BILLING_YEAR
+FROM INVOICES
+WHERE YEAR(BILLINGDATE) = 2010;
+
+
+
+
+
+
 
 
 
