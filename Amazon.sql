@@ -60,6 +60,28 @@ SELECT EMP_ID, SALARY
 FROM RankedEmployees
 WHERE row_num <= total_rows * 0.25;
 
+-- Consider a table EMPLOYEE with columns EMP_ID, DEPT_NO, and SALARY. 
+-- Write a query to extract all employees who have salaries higher than the avg. of their department.
+SELECT EMP_ID, DEPT_NO, SALARY
+FROM EMPLOYEE e
+WHERE SALARY > (
+    SELECT AVG(SALARY)
+    FROM EMPLOYEE
+    WHERE DEPT_NO = e.DEPT_NO
+);
+-- This subquery is correlated with the outer query through DEPT_NO = e.DEPT_NO
+
+-- Consider a table EMPLOYEE with columns EMP_ID and SALARY. Write a select query to output a rank against each record. 
+-- The rank must be based on the salary(rank 1 for the highest salary)
+SELECT EMP_ID, SALARY, RANK() OVER (ORDER BY SALARY DESC) AS rank
+FROM EMPLOYEE;
+
+
+
+
+
+
+
 
 
 
