@@ -87,3 +87,89 @@ Select Concat(First_Name, LAST_NAME) AS COMPLETE_NAME FROM WORKER;
 -- Write an SQL query to print all Worker details from the Worker table order by FIRST_NAME Ascending.
 SELECT * FROM WORKER
 ORDER BY FIRST_NAME;
+
+-- Write an SQL query to print all Worker details from the Worker table 
+-- order by FIRST_NAME Ascending and DEPARTMENT Descending.
+Select * from Worker 
+Order by FIRST_NAME ASC, DEPARTMENT DESC;
+
+-- print details for Workers with the first names “Vipul” and “Satish” from the Worker table.
+Select * from WORKER WHERE FIRST_NAME = 'Vipul' or FIRST_NAME = 'Satish';
+
+-- print details of workers excluding first names, “Vipul” and “Satish” from the Worker table.
+Select WORKER_ID, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT from WORKER WHERE FIRST_NAME = 'Vipul' or FIRST_NAME = 'Satish';
+Select * from Worker where FIRST_NAME not in ('Vipul','Satish');
+
+-- print details of Workers with DEPARTMENT name as “Admin”.
+select * FROM WORKER WHERE DEPARTMENT = 'Admin';
+
+-- print details of the Workers whose FIRST_NAME contains ‘a’.
+SELECT * FROM WORKER WHERE FIRST_NAME LIKE '%a%';
+
+-- print details of the Workers whose FIRST_NAME ends with ‘a’.
+SELECT * FROM WORKER WHERE FIRST_NAME LIKE '%a';
+
+-- print details of the Workers whose FIRST_NAME ends with ‘h’ and contains six alphabets.
+SELECT * FROM WORKER WHERE FIRST_NAME LIKE '%h' and LENGTH(FIRST_NAME) = 6;
+
+-- print details of the Workers whose SALARY lies between 100000 and 500000.
+SELECT * FROM WORKER;
+Select * from Worker where SALARY between 100000 and 500000;
+
+-- SQL query to print details of the Workers who joined in Feb 2021.
+SELECT * FROM Worker WHERE strftime('%Y', JOINING_DATE) = '2021' AND strftime('%m', JOINING_DATE) = '02';
+
+-- fetch the count of employees working in the department ‘Admin’.
+SELECT * FROM WORKER;
+Select COUNT(WORKER_ID) FROM WORKER WHERE DEPARTMENT = 'Admin';
+SELECT COUNT(*) FROM Worker WHERE DEPARTMENT = 'Admin';
+
+-- SQL query to fetch worker names with salaries >= 50000 and <= 100000. 
+SELECT FIRST_NAME FROM WORKER WHERE SALARY BETWEEN 50000 and 100000;
+
+-- SQL query to fetch the number of workers for each department in descending order.
+SELECT COUNT(WORKER_ID) FROM WORKER GROUP BY DEPARTMENT ORDER BY COUNT(WORKER_ID) DESC;
+
+-- SQL query to print details of the Workers who are also Managers
+SELECT * FROM TITLE;
+SELECT * FROM BONUS;
+SELECT w.WORKER_ID, w.FIRST_NAME, w.LAST_NAME, w.SALARY, w.JOINING_DATE, w.DEPARTMENT
+FROM WORKERS w
+LEFT JOIN TITLE t
+ON w.WORKER_ID = t.WORKER_REF_ID
+WHERE t.WORKER_TITLE = 'Manager';
+
+-- SQL query to fetch duplicate records having matching data in some fields of a table.
+SELECT WORKER_REF_ID, 
+AFFECTED_FROM, 
+COUNT(*) 
+FROM TITLE 
+GROUP BY WORKER_TITLE, 
+AFFECTED_FROM 
+HAVING COUNT(*) > 1;
+
+-- SQL query to show only odd rows from a table.
+SELECT * FROM WORKER WHERE WORKER_ID %2 != 0;
+
+-- SQL query to show only even rows from a table.
+SELECT * FROM WORKER WHERE WORKER_ID %2 = 0;
+
+-- SQL query to clone a new table from another table.
+SELECT * from TITLE;
+SELECT * FROM WORKER;
+
+SELECT w.WORKER_ID, w.FIRST_NAME, w.LAST_NAME, w.JOINING_DATE, w.DEPARTMENT, t.WORKER_TITLE, t.AFFECTED_FROM
+FROM WORKER w
+JOIN TITLE t
+ON w.worker_id = t.worker_ref_id;
+
+CREATE TABLE WorkerClone AS SELECT * FROM Worker;
+
+-- SQL query to fetch intersecting records of two tables.
+SELECT * FROM Worker INTERSECT SELECT * FROM WorkerClone;
+
+-- SQL query to show records from one table that another table does not have.
+SELECT * FROM Worker EXCEPT SELECT * FROM WorkerClone;
+
+-- SQL query to show the top n (say 10) records of a table.
+SELECT * FROM WORKER LIMIT 10;
