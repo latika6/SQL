@@ -173,3 +173,57 @@ SELECT * FROM Worker EXCEPT SELECT * FROM WorkerClone;
 
 -- SQL query to show the top n (say 10) records of a table.
 SELECT * FROM WORKER LIMIT 10;
+
+-- determine the nth (say n=5) highest salary from a table.
+SELECT * FROM WORKER;
+SELECT SALARY
+FROM (
+    SELECT SALARY, ROW_NUMBER() OVER (ORDER BY SALARY DESC) AS ROW_NUM
+    FROM WORKER
+) AS TEMP
+WHERE ROW_NUM = 5;
+
+-- NOTE: WHERE CLAUSE CANNOT BE DIRECTLY USE WITH ROW_NUMBER()
+
+SELECT TOP 1 Salary
+FROM (
+ SELECT DISTINCT TOP n Salary
+ FROM Worker 
+ ORDER BY Salary DESC
+ )
+ORDER BY Salary ASC;
+
+-- fetch the list of employees with the same salary
+
+Select w.WORKER_ID, w.FIRST_NAME, w.LAST_NAME, w.SALARY
+FROM WORKER w
+JOIN WORKER e
+ON w.SALARY = e.SALARY AND w.WORKER_ID != e.WORKER_ID;
+
+-- show the second-highest salary from a table.
+SELECT * FROM Worker
+ORDER BY SALARY DESC
+LIMIT 1 OFFSET 1;
+
+SELECT MAX(Salary) 
+FROM Worker 
+WHERE Salary NOT IN (SELECT MAX(Salary) FROM Worker);
+
+
+-- show one row twice in the results from a table.
+SELECT FIRST_NAME, DEPARTMENT 
+from Worker W 
+where W.DEPARTMENT='HR' 
+union all 
+select FIRST_NAME, DEPARTMENT 
+from Worker W1 
+where W1.DEPARTMENT='HR';
+
+-- fetch the first 50% of records from a table.
+SELECT * FROM
+(SELECT ROW_NUMBER() OVER (ORDER BY WORKER_ID) AS ROW_NUM, WORKER_ID, LAST_NAME, FIRST_NAME, SALARY,
+JOINING_DATE, DEPARTMENT FROM WORKER) AS TEMP
+WHERE ROW_NUM <= (SELECT COUNT(*) * 0.5 FROM WORKER);
+SELECT * FROM WORKER;
+
+-- fetch the departments that have less than five people in them.
